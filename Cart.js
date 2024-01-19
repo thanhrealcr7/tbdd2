@@ -1,175 +1,9 @@
-// import React from "react";
-// import {
-//   View,
-//   Text,
-//   FlatList,
-//   StyleSheet,
-//   Image,
-//   TouchableOpacity,
-// } from "react-native";
-// import { useCart } from "./CartContext";
 
-// const Cart = () => {
-//   const { cartItems, removeFromCart, updateCartItemQuantity } = useCart();
 
-//   const handleIncreaseQuantity = (itemId) => {
-//     updateCartItemQuantity(itemId, 1);
-//   };
-
-//   const handleDecreaseQuantity = (itemId) => {
-//     updateCartItemQuantity(itemId, -1);
-//   };
-
-//   // Calculate the price for each product considering the quantity
-//   const calculateProductPrice = (item) => {
-//     return (item.addNumber * item.price).toFixed(2);
-//   };
-
-//   // Calculate the total price for all products
-//   const calculateTotalPrice = () => {
-//     return cartItems
-//       .reduce((total, item) => total + Number(calculateProductPrice(item)), 0)
-//       .toFixed(2);
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.heading}>Shopping Cart</Text>
-//       {cartItems.length === 0 ? (
-//         <Text style={styles.emptyCartText}>Your cart is empty.</Text>
-//       ) : (
-//         <FlatList
-//           data={cartItems}
-//           keyExtractor={(item) => item.id.toString()}
-//           renderItem={({ item }) => (
-//             <View style={styles.cartItem}>
-//               <Image source={{ uri: item.image }} style={styles.productImage} />
-//               <View style={styles.productInfo}>
-//                 <Text style={styles.productTitle}>{item.title}</Text>
-//                 {/* <Text style={styles.productPrice}>${item.price}*quantity</Text> */}
-//                 <View style={styles.quantityContainer}>
-//                   <TouchableOpacity
-//                     style={styles.quantityButton}
-//                     onPress={() => handleDecreaseQuantity(item.id)}
-//                   >
-//                     <Text>-</Text>
-//                   </TouchableOpacity>
-//                   <Text>{item.addNumber}</Text>
-//                   <TouchableOpacity
-//                     style={styles.quantityButton}
-//                     onPress={() => handleIncreaseQuantity(item.id)}
-//                   >
-//                     <Text>+</Text>
-//                   </TouchableOpacity>
-//                 </View>
-//                 <Text style={styles.totalPrice}>
-//                   Total: ${calculateProductPrice(item)}
-//                 </Text>
-//               </View>
-//               <TouchableOpacity
-//                 style={styles.removeButton}
-//                 onPress={() => removeFromCart(item.id)}
-//               >
-//                 <Text style={styles.removeButton}>Remove</Text>
-//               </TouchableOpacity>
-//             </View>
-//           )}
-//         />
-//       )}
-
-//       {cartItems.length > 0 && (
-//         <View style={styles.totalContainer}>
-//           <Text style={styles.totalText}>Total: ${calculateTotalPrice()}</Text>
-//         </View>
-//       )}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//     maxWidth: 600,
-//     margin: "auto",
-//   },
-//   heading: {
-//     fontWeight: "bold",
-//     fontSize: 24,
-//     textAlign: "center",
-//     marginBottom: 16,
-//   },
-//   emptyCartText: {
-//     fontSize: 36,
-//     textAlign: "center",
-//     fontStyle: "italic",
-//     fontWeight: "bold", // Make the text bold
-//     marginTop: 20, // Add marginTop for better spacing
-//   },
-//   cartItem: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     borderBottomWidth: 1,
-//     borderColor: "gray",
-//     paddingVertical: 8,
-//     marginBottom: 8,
-//   },
-//   productImage: {
-//     width: 80,
-//     height: 80,
-//     marginRight: 10,
-//     objectFit: "contain",
-//   },
-//   productInfo: {
-//     flex: 1,
-//   },
-//   // productPrice: {
-
-//   // },
-//   productTitle: {
-//     height: 48,
-//     fontSize: 18,
-//     fontWeight: "bold",
-//     marginBottom: 10,
-//     overflow: "hidden",
-//   },
-//   quantityContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   quantityButton: {
-//     borderWidth: 1,
-//     borderColor: "gray",
-//     padding: 4,
-//     borderRadius: 4,
-//     marginHorizontal: 8,
-//   },
-//   removeButton: {
-//     color: "red",
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-
-//   totalContainer: {
-//     marginTop: 20,
-//     borderTopWidth: 2,
-//     borderColor: "#ccc",
-//     paddingVertical: 10,
-//     alignItems: "center",
-//   },
-//   totalText: {
-//     fontSize: 20,
-//     fontWeight: "bold",
-//   },
-//   totalPrice: {
-//     fontSize: 16,
-//     marginTop: 5,
-//     padding: 5,
-//     fontSize: 15,
-//     fontWeight: "bold",
-//   },
-// });
-import React from "react";
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
+import { Linking } from 'react-native';
+import React from 'react';
 import {
   View,
   Text,
@@ -178,8 +12,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-} from "react-native";
-import { useCart } from "./CartContext";
+} from 'react-native';
+import { useCart } from './CartContext';
 
 const Cart = () => {
   const {
@@ -198,82 +32,121 @@ const Cart = () => {
   };
 
   const calculateProductPrice = (item) => {
-    return (item.addNumber * item.price).toFixed(2);
+    return (item.addNumber * item.price);
   };
 
   const calculateTotalPrice = () => {
-    return cartItems
-      .reduce((total, item) => total + Number(calculateProductPrice(item)), 0)
-      .toFixed(2);
-  };
-
-  const handlePayNow = () => {
-    // Simulate payment processing (replace this with your actual payment logic)
-    // For simplicity, we'll just display an alert and clear the cart
-    Alert.alert(
-      "Payment Successful",
-      `Total Amount: $${calculateTotalPrice()}`,
-      [
-        {
-          text: "OK",
-          style: "bold",
-          onPress: () => {
-            clearCart(); // Clear the cart after successful payment
-          },
-        },
-      ]
+    return (
+      cartItems
+        .reduce((total, item) => total + Number(calculateProductPrice(item)), 0)
+        .toFixed(0) * 25000
     );
   };
+  
 
+  
+
+  const handlePayNow = async () => {
+    const partnerCode = "MOMO";
+    const accessKey = "F8BBA842ECF85";
+    const secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
+    const requestId = partnerCode + new Date().getTime().toString();
+    const orderId = requestId;
+    const orderInfo = "pay with MoMo";
+    const redirectUrl = "https://momo.vn/return";
+    const ipnUrl = "https://callback.url/notify";
+    const amount = calculateTotalPrice().toString();
+
+    const requestType = "payWithATM";
+    const extraData = "";
+
+    const rawSignature = `accessKey=${accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${ipnUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${partnerCode}&redirectUrl=${redirectUrl}&requestId=${requestId}&requestType=${requestType}`;
+
+    const signature = CryptoJS.HmacSHA256(rawSignature, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
+
+    const requestBody = JSON.stringify({
+      partnerCode: partnerCode,
+      accessKey: accessKey,
+      requestId: requestId,
+      amount: amount,
+      orderId: orderId,
+      orderInfo: orderInfo,
+      redirectUrl: redirectUrl,
+      ipnUrl: ipnUrl,
+      extraData: extraData,
+      requestType: requestType,
+      signature: signature,
+      lang: "en",
+    });
+
+    try {
+      const response = await fetch(
+        "https://test-payment.momo.vn/v2/gateway/api/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: requestBody,
+        }
+      );
+
+      const jsonResponse = await response.json();
+
+      if (jsonResponse && jsonResponse.payUrl) {
+        Linking.openURL(jsonResponse.payUrl).catch((err) => {
+          console.error("An error occurred when trying to open the URL:", err);
+          Alert.alert("Error", "Failed to open the payment URL.");
+        });
+      } else {
+        console.error("Invalid server response:", jsonResponse);
+        Alert.alert("Payment Error", "Payment URL not received.");
+      }
+      clearCart();
+    } catch (error) {
+      console.error("Error in sending request:", error);
+      Alert.alert("Payment Error", "An error occurred during payment.");
+    }
+  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Shopping Cart</Text>
+    <View style={updatedStyles.container}>
+      <Text style={updatedStyles.heading}>Your Cart</Text>
       {cartItems.length === 0 ? (
-        <Text style={styles.emptyCartText}>Your cart is empty.</Text>
+        <Text style={updatedStyles.emptyCartText}>Cart is Empty</Text>
       ) : (
         <FlatList
           data={cartItems}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.cartItem}>
-              <Image source={{ uri: item.image }} style={styles.productImage} />
-              <View style={styles.productInfo}>
-                <Text style={styles.productTitle}>{item.title}</Text>
-                <View style={styles.quantityContainer}>
-                  <TouchableOpacity
-                    style={styles.quantityButton}
-                    onPress={() => handleDecreaseQuantity(item.id)}
-                  >
-                    <Text>-</Text>
+            <View style={updatedStyles.cartItem}>
+              <Image source={{ uri: item.image }} style={updatedStyles.productImage} />
+              <View style={updatedStyles.productDetails}>
+                <Text style={updatedStyles.productTitle}>{item.title}</Text>
+                <Text style={updatedStyles.productPrice}>${item.price.toFixed(2)}</Text>
+                <View style={updatedStyles.quantityContainer}>
+                  <TouchableOpacity onPress={() => handleDecreaseQuantity(item.id)}>
+                    <Text style={updatedStyles.quantityButton}>-</Text>
                   </TouchableOpacity>
-                  <Text>{item.addNumber}</Text>
-                  <TouchableOpacity
-                    style={styles.quantityButton}
-                    onPress={() => handleIncreaseQuantity(item.id)}
-                  >
-                    <Text>+</Text>
+                  <Text style={updatedStyles.quantityText}>{item.addNumber}</Text>
+                  <TouchableOpacity onPress={() => handleIncreaseQuantity(item.id)}>
+                    <Text style={updatedStyles.quantityButton}>+</Text>
                   </TouchableOpacity>
                 </View>
-                <Text style={styles.totalPrice}>
-                  Total: ${calculateProductPrice(item)}
-                </Text>
               </View>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={() => removeFromCart(item.id)}
-              >
-                <Text style={styles.removeButton}>Remove</Text>
+              <TouchableOpacity onPress={() => removeFromCart(item.id)}>
+                <Text style={updatedStyles.removeButton}>X</Text>
               </TouchableOpacity>
             </View>
           )}
         />
       )}
-
       {cartItems.length > 0 && (
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Total: ${calculateTotalPrice()}</Text>
-          <TouchableOpacity style={styles.payButton} onPress={handlePayNow}>
-            <Text style={styles.payButtonText}>Pay Now</Text>
+        <View style={updatedStyles.checkoutContainer}>
+          <Text style={updatedStyles.totalText}>Total: ${calculateTotalPrice().toFixed(2)}</Text>
+          <TouchableOpacity style={updatedStyles.checkoutButton} onPress={handlePayNow}>
+            <Text style={updatedStyles.checkoutButtonText}>Checkout</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -281,100 +154,93 @@ const Cart = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const updatedStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    maxWidth: 600,
-    margin: "auto",
+    backgroundColor: '#f5f5f5',
   },
   heading: {
-    fontWeight: "bold",
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 16,
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 20,
   },
   emptyCartText: {
-    fontSize: 36,
-    textAlign: "center",
-    fontStyle: "italic",
-    fontWeight: "bold",
-    marginTop: 20,
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#666',
   },
   cartItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: "gray",
-    paddingVertical: 8,
-    marginBottom: 8,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   productImage: {
     width: 80,
     height: 80,
-    marginRight: 10,
-    objectFit: "contain",
   },
-  productInfo: {
+  productDetails: {
     flex: 1,
+    padding: 10,
   },
   productTitle: {
-    height: 48,
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  productPrice: {
+    color: '#333',
+    fontSize: 14,
     marginBottom: 10,
-    overflow: "hidden",
   },
   quantityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   quantityButton: {
     borderWidth: 1,
-    borderColor: "gray",
-    padding: 4,
-    borderRadius: 4,
-    marginHorizontal: 8,
+    borderColor: '#ccc',
+    padding: 5,
+    borderRadius: 5,
+    fontSize: 16,
+    width: 30,
+    textAlign: 'center',
+  },
+  quantityText: {
+    marginHorizontal: 10,
+    fontSize: 16,
   },
   removeButton: {
-    color: "red",
-    fontSize: 16,
-    fontWeight: "bold",
+    padding: 10,
+    color: '#ff6347',
+    fontWeight: 'bold',
   },
-  removeButtonText: {
-    color: "red",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  totalPrice: {
-    fontSize: 16,
-    marginTop: 5,
-    padding: 5,
-    fontSize: 15,
-    fontWeight: "bold",
-  },
-  totalContainer: {
-    marginTop: 20,
-    borderTopWidth: 2,
-    borderColor: "#ccc",
-    paddingVertical: 10,
-    alignItems: "center",
+  checkoutContainer: {
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    padding: 15,
   },
   totalText: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  payButton: {
-    backgroundColor: "green",
+  checkoutButton: {
+    backgroundColor: '#56CCF2',
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
-  payButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+  checkoutButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 
