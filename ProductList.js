@@ -1,4 +1,7 @@
 
+
+
+
 // import React, { useState, useEffect } from "react";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 // import {
@@ -15,7 +18,7 @@
 // import axios from "axios";
 
 // const ProductList = () => {
-//   const { addToCart } = useCart();
+//   const { addToCart, cartItems } = useCart();
 //   const [products, setProducts] = useState([]);
 //   const [jewelry, setJewelry] = useState([]);
 //   const [electronics, setElectronics] = useState([]);
@@ -72,7 +75,7 @@
 //       <View style={styles.header}>
 //         <TextInput
 //           style={styles.searchInput}
-//           placeholder="Search products"
+//           placeholder="Search products đi"
 //           value={search}
 //           onChangeText={(text) => setSearch(text)}
 //         />
@@ -83,6 +86,11 @@
 //           <Text style={styles.buttonText}>
 //             <Ionicons name="cart" size={25} color="#fff" />
 //           </Text>
+//           {cartItems.length > 0 && (
+//             <View style={styles.cartBadge}>
+//               <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+//             </View>
+//           )}
 //         </TouchableOpacity>
 //       </View>
 //       {search.length > 0 && (
@@ -123,7 +131,7 @@
 //           </ScrollView>
 //         </View>
 //       )}
-      
+
 //       <View style={styles.bannerContainer}>
 //         <Image
 //           source={require("./assets/banner2.jpg")}
@@ -231,45 +239,59 @@
 //         ))}
 //       </ScrollView>
 
-
-
 //     </ScrollView>
 //   );
 // };
 
 
-
 // const styles = StyleSheet.create({
+
 //   container: {
 //     flex: 1,
 //     padding: 16,
 //     maxWidth: 600,
 //     margin: "auto",
-//     backgroundColor: "#f0f0f0", // Light grey background
+//     backgroundColor: "#f8f8f8", // Một màu xám nhạt thay vì màu trắng
 //   },
 //   header: {
 //     flexDirection: "row",
 //     alignItems: "center",
 //     justifyContent: "space-between",
 //     marginBottom: 16,
-//     // backgroundColor: "#4a69bd", 
 //   },
 //   searchInput: {
 //     height: 40,
-//     borderColor: "#4a69bd",
+//     borderColor: "#3498db", // Màu xanh dương
 //     borderWidth: 2,
 //     paddingLeft: 10,
 //     borderRadius: 10,
 //     flex: 1,
-//     backgroundColor: "#fff",
+//     backgroundColor: "#ecf0f1", // Màu xám nhạt hơn
 //   },
 //   cartButton: {
-//     backgroundColor: "#60a3bc", // Soft blue button
+//     backgroundColor: "#e74c3c", // Màu đỏ
 //     padding: 8,
 //     borderRadius: 15,
 //     marginLeft: 10,
-//     borderColor: "#4a69bd",
+//     borderColor: "#c0392b", // Màu đỏ nhạt hơn
 //     borderWidth: 1,
+//     position: "relative",
+//   },
+//   cartBadge: {
+//     position: "absolute",
+//     top: 0,
+//     right: 0,
+//     backgroundColor: "#2c3e50", // Màu đen
+//     borderRadius: 10,
+//     width: 20,
+//     height: 20,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   cartBadgeText: {
+//     color: "#fff",
+//     fontSize: 12,
+//     fontWeight: "bold",
 //   },
 //   bannerContainer: {
 //     marginBottom: 16,
@@ -285,24 +307,20 @@
 //     fontSize: 24,
 //     textAlign: "left",
 //     marginBottom: 10,
-//     color: "#0a3d62", // Dark blue text
-//   },
-//   productContainer: {
-//     flexDirection: "row",
-//     flexWrap: "wrap",
-//     justifyContent: "space-between",
+//     color: "#3498db", // Màu xanh dương
 //   },
 //   productCard: {
 //     width: 150,
 //     height: 230,
 //     marginBottom: 20,
 //     borderWidth: 0.8,
-//     borderColor: "#78e08f", // Light green border
+//     borderColor: "#27ae60", // Màu xanh lá cây
 //     borderRadius: 10,
 //     overflow: "hidden",
 //     marginRight: 20,
 //     backgroundColor: "#fff",
 //   },
+  
 //   productImage: {
 //     width: "100%",
 //     height: "50%",
@@ -363,12 +381,8 @@
 //   },
 // });
 
+
 // export default ProductList;
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -442,7 +456,7 @@ const ProductList = () => {
       <View style={styles.header}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search products đi"
+          placeholder="製品を検索する"
           value={search}
           onChangeText={(text) => setSearch(text)}
         />
@@ -462,7 +476,7 @@ const ProductList = () => {
       </View>
       {search.length > 0 && (
         <View>
-          <Text style={styles.heading}>Search Results</Text>
+          <Text style={styles.heading}>検索結果</Text>
           <ScrollView
             contentContainerStyle={styles.productContainer}
             horizontal={true}
@@ -481,7 +495,7 @@ const ProductList = () => {
                       style={styles.addToCartButton}
                       onPress={() => handleAddToCart(product)}
                     >
-                      <Text style={styles.buttonText}>Add</Text>
+                      <Text style={styles.buttonText}>追加</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.profileButton}
@@ -489,7 +503,7 @@ const ProductList = () => {
                         handleSeeProfile(product.id, product.title)
                       }
                     >
-                      <Text style={styles.buttonText}>Profile</Text>
+                      <Text style={styles.buttonText}>プロフィール</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -498,16 +512,15 @@ const ProductList = () => {
           </ScrollView>
         </View>
       )}
-
+      <Text style={styles.themostText}>贅沢な経験</Text>
+      <Text style={styles.luxuriousText}>ファッションと上品さが交わる場所</Text>
       <View style={styles.bannerContainer}>
         <Image
-          source={require("./assets/banner2.jpg")}
+          source={require("./assets/banner.png")}
           style={styles.bannerImage}
         />
       </View>
-      <Text style={styles.themostText}>Experience Luxury:</Text>
-      <Text style={styles.luxuriousText}>Where Fashion Meets Finery</Text>
-      <Text style={styles.heading}>All products</Text>
+      <Text style={styles.heading}>すべての製品</Text>
       <ScrollView
         contentContainerStyle={styles.productContainer}
         horizontal={true}
@@ -526,20 +539,20 @@ const ProductList = () => {
                   style={styles.addToCartButton}
                   onPress={() => handleAddToCart(product)}
                 >
-                  <Text style={styles.buttonText}>Add</Text>
+                  <Text style={styles.buttonText}>追加</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.profileButton}
                   onPress={() => handleSeeProfile(product.id, product.title)}
                 >
-                  <Text style={styles.buttonText}>Profile</Text>
+                  <Text style={styles.buttonText}>プロフィール</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         ))}
       </ScrollView>
-      <Text style={styles.heading}>Jewelery</Text>
+      <Text style={styles.heading}>ジュエリー</Text>
       <ScrollView
         contentContainerStyle={styles.productContainer}
         horizontal={true}
@@ -558,20 +571,20 @@ const ProductList = () => {
                   style={styles.addToCartButton}
                   onPress={() => handleAddToCart(jewelery)}
                 >
-                  <Text style={styles.buttonText}>Add</Text>
+                  <Text style={styles.buttonText}>追加</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.profileButton}
                   onPress={() => handleSeeProfile(jewelery.id, jewelery.title)}
                 >
-                  <Text style={styles.buttonText}>Profile</Text>
+                  <Text style={styles.buttonText}>プロフィール</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         ))}
       </ScrollView>
-      <Text style={styles.heading}>Electronics</Text>
+      <Text style={styles.heading}>エレクトロニクス</Text>
       <ScrollView
         contentContainerStyle={styles.productContainer}
         horizontal={true}
@@ -590,7 +603,7 @@ const ProductList = () => {
                   style={styles.addToCartButton}
                   onPress={() => handleAddToCart(electronics)}
                 >
-                  <Text style={styles.buttonText}>Add</Text>
+                  <Text style={styles.buttonText}>追加</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.profileButton}
@@ -598,7 +611,7 @@ const ProductList = () => {
                     handleSeeProfile(electronics.id, electronics.title)
                   }
                 >
-                  <Text style={styles.buttonText}>Profile</Text>
+                  <Text style={styles.buttonText}>プロフィール</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -618,7 +631,7 @@ const styles = StyleSheet.create({
     padding: 16,
     maxWidth: 600,
     margin: "auto",
-    backgroundColor: "#f8f8f8", // Một màu xám nhạt thay vì màu trắng
+    backgroundColor: "#f8f8f8", // Màu xám nhạt thay vì màu trắng
   },
   header: {
     flexDirection: "row",
@@ -704,7 +717,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     flex: 1,
-    marginLeft: 5,
+    marginLeft:1,
     alignItems: "center",
   },
   profileButton: {
@@ -717,11 +730,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 9,
   },
   productInfo: {
     flex: 1,
-    padding: 10,
+    padding: 12,
   },
   productTitle: {
     fontSize: 16,
@@ -737,16 +750,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   luxuriousText: {
-    fontSize: 40,
+    fontSize: 34,
     fontWeight: "bold",
     color: "#38ada9", // Teal text
   },
   themostText: {
     fontSize: 35,
     fontWeight: "bold",
-    color: "#3c6382", // Soft dark blue
+    color: "#3c6382", 
+    // Soft dark blue
+    textAlign: "center",
   },
 });
 
 
 export default ProductList;
+
+

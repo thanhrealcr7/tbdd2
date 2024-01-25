@@ -1,5 +1,4 @@
 
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   View,
@@ -15,7 +14,7 @@
 // import { useNavigation } from "@react-navigation/native";
 // import axios from "axios";
 // import * as Location from "expo-location";
-
+// import { MaterialIcons } from '@expo/vector-icons'; // You may use other icon libraries
 // const ProfileScreen = ({ route }) => {
 //   const [userData, setUserData] = useState(null);
 //   const [location, setLocation] = useState(null);
@@ -30,7 +29,6 @@
 //       const fetchUserData = async () => {
 //         try {
 //           const response = await axios.get(
-//             // `https://fakestoreapi.com/users/${userId}`
 //             `https://65aa12d8081bd82e1d960561.mockapi.io/user/${userId}`
 //           );
 //           setUserData(response.data);
@@ -53,7 +51,7 @@
 //       try {
 //         const locationResult = await Location.getCurrentPositionAsync({
 //           accuracy: Location.Accuracy.Highest,
-//           timeout: 10000, // Increase timeout if needed
+//           timeout: 10000,
 //         });
 
 //         setLocation(locationResult.coords);
@@ -63,11 +61,11 @@
 //           longitude: locationResult.coords.longitude,
 //         });
 
-//         console.log("Reverse Geocode Result:", reverseGeocode); // Debug: Check the result
+//         console.log("Reverse Geocode Result:", reverseGeocode);
 
 //         if (reverseGeocode && reverseGeocode.length > 0) {
 //           setAddress(reverseGeocode[0]);
-//           console.log("Set Address:", reverseGeocode[0]); // Debug: Check the address object
+//           console.log("Set Address:", reverseGeocode[0]);
 //         }
 
 //         setLoading(false);
@@ -107,143 +105,155 @@
 
 //   if (loading) {
 //     return (
-//       <View style={styles.loadingContainer}>
-//         <ActivityIndicator size="large" color="#0000ff" />
-//         <Text style={styles.loadingText}>Loading...</Text>
+//       <View style={newStyles.centeredView}>
+//         <ActivityIndicator size="large" color="#5DB075" />
+//         <Text style={newStyles.loadingText}>Loading your profile...</Text>
 //       </View>
 //     );
 //   }
 
 //   return (
-//     <ScrollView style={styles.scrollView}>
-//       <View style={styles.profileContainer}>
+//     <ScrollView style={newStyles.container}>
+//       <View style={newStyles.profileCard}>
 //         {userData && (
-//           <View style={styles.userInfoSection}>
+//           <>
 //             <Image
-//             source={require('./assets/avatar.jpg')} 
-//             style={styles.profileImage}
+//               source={require('./assets/avatar.jpg')} // Update with dynamic image
+//               style={newStyles.profileImage}
 //             />
-//             <Text style={styles.name}>{`${userData.name}`}</Text>
-//             <Text style={styles.email}>Email: {userData.email}</Text>
-//             <Text style={styles.phone}>Phone: {userData.phone}</Text>
-//           </View>
+//             <Text style={newStyles.name}>{userData.name}</Text>
+//             <Text style={newStyles.details}>Email: {userData.email}</Text>
+//             <Text style={newStyles.details}>Phone: {userData.phone}</Text>
+//           </>
 //         )}
 //       </View>
-//       <View style={styles.locationContainer}>
-//         <Text style={styles.sectionTitle}>Current Location</Text>
+
+//       <View style={newStyles.locationCard}>
+//         <Text style={newStyles.cardTitle}>Current Location</Text>
 //         {location ? (
 //           <>
 //             {address && (
 //               <>
-//                 <Text style={styles.locationText}>Name: {address.name}</Text>
-//                 <Text style={styles.locationText}>
-//                   Street: {address.street}
-//                 </Text>
-//                 <Text style={styles.locationText}>
-//                   City: {address.subregion}
-//                 </Text>
+//                 <Text style={newStyles.details}>Street: {address.street}</Text>
+//                 <Text style={newStyles.details}>City: {address.city}</Text>
 //               </>
 //             )}
-//             <TouchableOpacity style={styles.button} onPress={openMap}>
-//               <Text style={styles.buttonText}>Open in Maps</Text>
+//             <TouchableOpacity style={newStyles.button} onPress={openMap}>
+//               <Text style={newStyles.buttonText}>View on Map</Text>
 //             </TouchableOpacity>
 //           </>
 //         ) : (
-//           <Text style={styles.errorText}>Unable to fetch location.</Text>
+//           <Text style={newStyles.errorText}>Location not available.</Text>
 //         )}
-//         <TouchableOpacity
-//           style={[styles.button, styles.logoutButton]}
-//           onPress={handleLogout}
-//         >
-//           <Text style={styles.buttonText}>Logout</Text>
-//         </TouchableOpacity>
 //       </View>
+
+//       <TouchableOpacity
+//         style={[newStyles.button, newStyles.logoutButton]}
+//         onPress={handleLogout}
+//       >
+//         <MaterialIcons name="logout" size={24} color="white" />
+//         <Text style={newStyles.buttonText}>Logout</Text>
+//       </TouchableOpacity>
 //     </ScrollView>
 //   );
 // };
 
-// const styles = StyleSheet.create({
-//   loadingContainer: {
+// const newStyles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#F4F4F4",
+//   },
+//   centeredView: {
 //     flex: 1,
 //     justifyContent: "center",
 //     alignItems: "center",
-//     backgroundColor: "#f2f2f2",
+//     backgroundColor: "#F4F4F4",
 //   },
 //   loadingText: {
 //     marginTop: 10,
-//     fontSize: 18,
-//     color: "#555",
+//     fontSize: 16,
+//     color: "#333",
 //   },
-//   scrollView: {
-//     backgroundColor: "#f2f2f2",
-//   },
-//   profileContainer: {
-//     alignItems: "center",
-//     paddingVertical: 20,
-//   },
-//   userInfoSection: {
-//     backgroundColor: "#fff",
-//     borderRadius: 10,
+//   profileCard: {
+//     backgroundColor: "#FFFFFF",
+//     borderRadius: 12,
 //     padding: 20,
+//     margin: 15,
 //     alignItems: "center",
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 3.84,
+//     elevation: 5,
+//   },
+//   locationCard: {
+//     backgroundColor: "#FFFFFF",
+//     borderRadius: 12,
+//     padding: 20,
+//     marginHorizontal: 15,
+//     marginBottom: 15,
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 3.84,
+//     elevation: 5,
 //   },
 //   profileImage: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 50,
+//     width: 120,
+//     height: 120,
+//     borderRadius: 60,
 //     marginBottom: 10,
 //   },
 //   name: {
-//     fontSize: 22,
+//     fontSize: 24,
 //     fontWeight: "bold",
 //     color: "#333",
 //   },
-//   email: {
+//   details: {
 //     fontSize: 16,
 //     color: "#666",
+//     marginVertical: 2,
 //   },
-//   phone: {
-//     fontSize: 16,
-//     color: "#666",
-//   },
-//   sectionTitle: {
+//   cardTitle: {
 //     fontSize: 20,
 //     fontWeight: "bold",
 //     color: "#333",
-//     padding: 10,
-//   },
-//   locationContainer: {
-//     padding: 20,
-//   },
-//   locationText: {
-//     fontSize: 16,
-//     color: "#666",
-//   },
-//   errorText: {
-//     fontSize: 16,
-//     color: "red",
+//     marginBottom: 10,
 //   },
 //   button: {
-//     backgroundColor: "#0066cc",
-//     padding: 15,
+//     backgroundColor: "#5DB075",
+//     padding: 12,
 //     borderRadius: 8,
-//     marginVertical: 10,
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 10,
 //   },
 //   buttonText: {
 //     color: "#fff",
-//     textAlign: "center",
 //     fontWeight: "bold",
+//     marginLeft: 8,
 //   },
 //   logoutButton: {
-//     backgroundColor: "#cc0000",
+//     backgroundColor: "#FF6347",
+//     marginHorizontal: 15,
+//     marginBottom: 20,
 //   },
-//   // Add any other styles you need here
+//   errorText: {
+//     fontSize: 16,
+//     color: "#FF6347",
+//     textAlign: "center",
+//   },
+//   // Add any additional styles you need here
 // });
 
 // export default ProfileScreen;
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -259,7 +269,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as Location from "expo-location";
-import { MaterialIcons } from '@expo/vector-icons'; // You may use other icon libraries
+import { MaterialIcons } from '@expo/vector-icons'; // Bạn có thể sử dụng thư viện biểu tượng khác
+
 const ProfileScreen = ({ route }) => {
   const [userData, setUserData] = useState(null);
   const [location, setLocation] = useState(null);
@@ -278,13 +289,13 @@ const ProfileScreen = ({ route }) => {
           );
           setUserData(response.data);
         } catch (error) {
-          console.error("API Error:", error);
+          console.error("API エラー:", error);
         }
       };
       fetchUserData();
     }
 
-    // Get current location
+    // Lấy vị trí hiện tại
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -306,16 +317,16 @@ const ProfileScreen = ({ route }) => {
           longitude: locationResult.coords.longitude,
         });
 
-        console.log("Reverse Geocode Result:", reverseGeocode);
+        console.log("逆ジオコードの結果:", reverseGeocode);
 
         if (reverseGeocode && reverseGeocode.length > 0) {
           setAddress(reverseGeocode[0]);
-          console.log("Set Address:", reverseGeocode[0]);
+          console.log("住所の設定:", reverseGeocode[0]);
         }
 
         setLoading(false);
       } catch (error) {
-        console.error("Error getting current location:", error);
+        console.error("現在の位置の取得エラー:", error);
         setLoading(false);
       }
     };
@@ -352,7 +363,7 @@ const ProfileScreen = ({ route }) => {
     return (
       <View style={newStyles.centeredView}>
         <ActivityIndicator size="large" color="#5DB075" />
-        <Text style={newStyles.loadingText}>Loading your profile...</Text>
+        <Text style={newStyles.loadingText}>プロフィールを読み込んでいます...</Text>
       </View>
     );
   }
@@ -363,32 +374,32 @@ const ProfileScreen = ({ route }) => {
         {userData && (
           <>
             <Image
-              source={require('./assets/avatar.jpg')} // Update with dynamic image
+              source={require('./assets/avatar.jpg')} // Cập nhật với hình ảnh động
               style={newStyles.profileImage}
             />
             <Text style={newStyles.name}>{userData.name}</Text>
-            <Text style={newStyles.details}>Email: {userData.email}</Text>
-            <Text style={newStyles.details}>Phone: {userData.phone}</Text>
+            <Text style={newStyles.details}>メール: {userData.email}</Text>
+            <Text style={newStyles.details}>電話: {userData.phone}</Text>
           </>
         )}
       </View>
 
       <View style={newStyles.locationCard}>
-        <Text style={newStyles.cardTitle}>Current Location</Text>
+        <Text style={newStyles.cardTitle}>現在の位置</Text>
         {location ? (
           <>
             {address && (
               <>
-                <Text style={newStyles.details}>Street: {address.street}</Text>
-                <Text style={newStyles.details}>City: {address.city}</Text>
+                <Text style={newStyles.details}>通り: {address.street}</Text>
+                <Text style={newStyles.details}>市区町村: {address.city}</Text>
               </>
             )}
             <TouchableOpacity style={newStyles.button} onPress={openMap}>
-              <Text style={newStyles.buttonText}>View on Map</Text>
+              <Text style={newStyles.buttonText}>マップで表示</Text>
             </TouchableOpacity>
           </>
         ) : (
-          <Text style={newStyles.errorText}>Location not available.</Text>
+          <Text style={newStyles.errorText}>位置が利用できません。</Text>
         )}
       </View>
 
@@ -397,23 +408,14 @@ const ProfileScreen = ({ route }) => {
         onPress={handleLogout}
       >
         <MaterialIcons name="logout" size={24} color="white" />
-        <Text style={newStyles.buttonText}>Logout</Text>
+        <Text style={newStyles.buttonText}>ログアウト</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const newStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F4F4",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F4F4F4",
-  },
+  // ... (Các styles khác giữ nguyên)
   loadingText: {
     marginTop: 10,
     fontSize: 16,
@@ -495,7 +497,7 @@ const newStyles = StyleSheet.create({
     color: "#FF6347",
     textAlign: "center",
   },
-  // Add any additional styles you need here
+  // Thêm bất kỳ styles bổ sung nào bạn cần ở đây
 });
 
 export default ProfileScreen;

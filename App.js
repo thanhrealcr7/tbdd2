@@ -1,3 +1,4 @@
+import Restart from 'react-native-restart';
 
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,6 +13,7 @@ import SignIn from "./SignIn";
 import { CartProvider } from "./CartContext";
 import ProfileScreen from "./ProfileScreen";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import the icon library
+import { useTranslation } from 'react-i18next';
 
 
 //////
@@ -19,9 +21,9 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeStack = () => (
-  <Stack.Navigator initialRouteName="Home">
+  <Stack.Navigator initialRouteName="ホーム">
     <Stack.Screen
-      name="Home"
+      name="ホーム"
       component={ProductList}
       options={{ headerShown: false }}
     />
@@ -46,10 +48,13 @@ const App = () => {
                 screenOptions={({ route }) => ({
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
-                    if (route.name === "Home") {
+                    if (route.name === "ホーム") {
                       iconName = focused ? "home" : "home";
-                    } else if (route.name === "Search") {
+                    } else if (route.name === "検索") {
                       iconName = focused ? "search" : "search";
+                    }
+                    else if (route.name === "Profile") {
+                      iconName = focused ? "share" : "share";
                     }
                     // Add more conditions for other tabsr
                     // You can return any component that you like here!
@@ -58,8 +63,8 @@ const App = () => {
                 })}
               >
               
-                <Tab.Screen name="Home" component={HomeStack} />
-                <Tab.Screen name="Search" component={SearchComponent} />
+                <Tab.Screen name="ホーム" component={HomeStack} />
+                <Tab.Screen name="検索" component={SearchComponent} />
                 <Tab.Screen name="Profile" component={ProfileScreen} />
               </Tab.Navigator>
             )}
